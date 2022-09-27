@@ -1,25 +1,13 @@
 // d982b206b7125a363d94918d08ebf560 - my API key
 // https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key} - погода в даний момент.
 // http://api.openweathermap.org/data/2.5/forecast?q=${city name}&appid={API key} - погода погодинно.
-// ca16aa945ebdea4f126db5ca6372a64d - my second API key
 
 let wrapper = document.querySelector('.wrapper')
 let city = "Ternopil";
-
-// fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=ca16aa945ebdea4f126db5ca6372a64d`)
-//   .then((resp) => {return resp.json()})
-//   .then((data) =>{
-//     console.log(data)
-//   })
-
-// fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=ca16aa945ebdea4f126db5ca6372a64d`)
-// .then((resp) => {return resp.json()})
-// .then((data) =>{
-//   console.log(data)
-// })
+const key = "ca16aa945ebdea4f126db5ca6372a64d"
 
 const dailyWeather = () => {
-  fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=ca16aa945ebdea4f126db5ca6372a64d`)
+  fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${key}`)
   .then(resp => resp.json())
   .then(data =>{
 
@@ -110,7 +98,7 @@ document.addEventListener('keydown', (e) => {
 
 const init = () => {
 
-  fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=ca16aa945ebdea4f126db5ca6372a64d`)
+  fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`)
   .then((resp) => {return resp.json()})
   .then((data) => {
 
@@ -170,5 +158,5 @@ setInterval(() => {
   dailyWeather();
   init();
 
-}, 600000) //Обновяємо інфу кожні 60секунд
+}, 600000) //Обновяємо інфу кожні 10 хвилин
 
