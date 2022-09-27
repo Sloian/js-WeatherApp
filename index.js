@@ -4,7 +4,7 @@
 
 let wrapper = document.querySelector('.wrapper')
 let city = "Ternopil";
-const key = "ca16aa945ebdea4f126db5ca6372a64d"
+const key = "ca16aa945ebdea4f126db5ca6372a64d";
 
 const dailyWeather = () => {
   fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${key}`)
@@ -15,7 +15,6 @@ const dailyWeather = () => {
     hourly_forecast_wrapper = document.querySelector('.hourly-forecast-wrapper')
     right_block_wrapper.innerHTML = "";
     hourly_forecast_wrapper.innerHTML = "";
-
 
     for (let index = 0; index < 6; index++) {
 
@@ -75,7 +74,6 @@ const dailyWeather = () => {
 
         </div>
       `
-
       }
       right_block_wrapper.innerHTML += dayTemplate();
     }
@@ -157,6 +155,5 @@ dailyWeather()
 setInterval(() => {
   dailyWeather();
   init();
-
 }, 600000) //Обновяємо інфу кожні 10 хвилин
 

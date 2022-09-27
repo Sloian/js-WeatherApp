@@ -212,4 +212,13 @@ body{
     font-size: 120%;
   }
 
+
+
+}
+
+@media screen and (max-width: 389px){
+  .wrapper{
+    padding: 30px 5px 30px 12px;
+  }
+
 }
