@@ -17,14 +17,11 @@ const DAYS =  {
 
 const key = "ca16aa945ebdea4f126db5ca6372a64d";
 
-
-
 const fetchWeatherInit = async () =>{
 
   let resp = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city || cityDefault}&appid=${key}`);
   if (resp.ok === true) {
     const data = await resp.json();
-    console.log(resp);
     return data;
   } else {
 
@@ -39,7 +36,6 @@ const fetchWeatherComponent = async () =>{
   let resp = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city || cityDefault}&appid=${key}`);
   if (resp.ok === true) {
     const data = await resp.json();
-    console.log(resp);
     return data;
 
   } else {
@@ -52,7 +48,6 @@ const fetchWeatherComponent = async () =>{
 
 
 fetchWeatherInit().then((data) => {
-  console.log(data)
   init(data);
 })
 
@@ -153,7 +148,6 @@ document.addEventListener('keydown', (e) => {
     let searchInp = document.querySelector('.search')
     let value = searchInp.value;
     if(!value){
-      console.log("noo")
       return false;
 
     } else{
