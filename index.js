@@ -2,7 +2,9 @@
 // https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key} - погода в даний момент.
 // http://api.openweathermap.org/data/2.5/forecast?q=${city name}&appid={API key} - погода погодинно.
 let wrapper = document.querySelector('.wrapper')
-let city = "Ternopil";
+let cityDefault = "lviv";
+let city = "";
+
 const DAYS =  {
   0: "Tusday",
   1: "Monaday",
@@ -15,19 +17,42 @@ const DAYS =  {
 
 const key = "ca16aa945ebdea4f126db5ca6372a64d";
 
+
+
 const fetchWeatherInit = async () =>{
-  const resp = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${key}`);
-  const data = await resp.json();
-  return data;
+
+  let resp = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city || cityDefault}&appid=${key}`);
+  if (resp.ok === true) {
+    const data = await resp.json();
+    console.log(resp);
+    return data;
+  } else {
+
+    resp = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityDefault}&appid=${key}`);
+    const data = await resp.json();
+    return data;
+  }
 }
 
 const fetchWeatherComponent = async () =>{
-  const resp = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${key}`);
-  const data = await resp.json();
-  return data;
+
+  let resp = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city || cityDefault}&appid=${key}`);
+  if (resp.ok === true) {
+    const data = await resp.json();
+    console.log(resp);
+    return data;
+
+  } else {
+    alert('Ви ввели не існуюче місто');
+    resp = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityDefault}&appid=${key}`);
+    const data = await resp.json();
+    return data;
+  }
 }
 
+
 fetchWeatherInit().then((data) => {
+  console.log(data)
   init(data);
 })
 
@@ -36,64 +61,49 @@ fetchWeatherComponent().then((data) =>{
 })
 
 
-
 const init = (data) => {
-  try {
 
-    const getTemplate = () =>{
-      return `
-      <input class="search" id="search" placeholder="search" autocomplete="off" autofocus></input>
-      <div class="weather-wrapper">
-        <div class="left-block-wrapper">
+  const getTemplate = () =>{
+    return `
+    <input class="search" id="search" placeholder="search" autocomplete="off" autofocus></input>
+    <div class="weather-wrapper">
+      <div class="left-block-wrapper">
 
-          <div class="info-block">
-            <p id='city' class="city">${data.name}, ${data.sys.country}</p>
-            <img class='weather-img' src="http://openweathermap.org/img/w/` + data.weather[0].icon + `.png "></img>
-            <h1 id='temp' class="temperature">${temperature()}°</h1>
-            <p id="main-weather" class="main-weather">${data.weather[0].main}</p>
-            <div class="wind-wrapper">
-              <p>Wind</p>
-              <p><i class="bi bi-wind"></i><span class="wind-speed">${Math.round(data.wind.speed)}m/s</span></p>
-            </div>
+        <div class="info-block">
+          <p id='city' class="city">${data.name}, ${data.sys.country}</p>
+          <img class='weather-img' src="http://openweathermap.org/img/w/` + data.weather[0].icon + `.png "></img>
+          <h1 id='temp' class="temperature">${temperature()}°</h1>
+          <p id="main-weather" class="main-weather">${data.weather[0].main}</p>
+          <div class="wind-wrapper">
+            <p>Wind</p>
+            <p><i class="bi bi-wind"></i><span class="wind-speed">${Math.round(data.wind.speed)}m/s</span></p>
           </div>
         </div>
-
-        <div class="hourly-forecast-wrapper">
-        </div>
-
       </div>
 
-      <div class="right-block-wrapper">
+      <div class="hourly-forecast-wrapper">
       </div>
-      `
-    }
 
-    wrapper.innerHTML = "";
-    wrapper.innerHTML = getTemplate();
-    right_block_wrapper = document.querySelector('.right-block-wrapper')
-    hourly_forecast_wrapper = document.querySelector('.hourly-forecast-wrapper')
-    searchInp = document.querySelector('.search')
+    </div>
 
-    function temperature() {
-        let getTemp = data.main.temp
-        let tempC = Math.floor(getTemp) - 273
-        return tempC
-    }
-
-    console.log('перезапуск')
-  } catch (error) {
-    alert('This city not found')
-    city = 'Ternopil';
-    fetchWeatherInit().then((data) => {
-      init(data)
-    })
-    fetchWeatherComponent().then((data) =>{
-      dailyWeather(data)
-    })
-    searchInp.value = ' '
-
+    <div class="right-block-wrapper">
+    </div>
+    `
   }
+
+  wrapper.innerHTML = "";
+  wrapper.innerHTML = getTemplate();
+  right_block_wrapper = document.querySelector('.right-block-wrapper')
+  hourly_forecast_wrapper = document.querySelector('.hourly-forecast-wrapper')
+
+  function temperature() {
+      let getTemp = data.main.temp
+      let tempC = Math.floor(getTemp) - 273
+      return tempC
+  }
+  console.log('перезапуск')
 }
+
 
 const dailyWeather = (data) => {
 
@@ -139,25 +149,25 @@ const dailyWeather = (data) => {
 }
 
 document.addEventListener('keydown', (e) => {
-if(e.key === 'Enter') {
-  let searchInp = document.querySelector('.search')
-  let value = searchInp.value;
-  if(!value){
-    console.log("noo")
-    return false;
-  } else{
-    city = value;
-    fetchWeatherInit().then((data) => {
-      init(data)
-    })
-    fetchWeatherComponent().then((data) =>{
-      dailyWeather(data)
-    })
-    searchInp.value = '';
-  }
+  if(e.key === 'Enter') {
+    let searchInp = document.querySelector('.search')
+    let value = searchInp.value;
+    if(!value){
+      console.log("noo")
+      return false;
+
+    } else{
+
+      city = value;
+      fetchWeatherInit().then((data) => {
+        init(data)
+      })
+      fetchWeatherComponent().then((data) =>{
+        dailyWeather(data)
+      })
+    }
   }
 })
-
 
 
 setInterval(() => {
@@ -167,4 +177,4 @@ setInterval(() => {
   fetchWeatherComponent().then((data) =>{
     dailyWeather(data)
   });
-}, 60000) //Обновяємо інфу кожні 10 хвилин
+}, 600000) //Обновяємо інфу кожні 10 хвилин
